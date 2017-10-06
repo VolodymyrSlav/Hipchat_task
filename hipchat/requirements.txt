@@ -1,0 +1,4 @@
+falcon
+BeautifulSoup
+gunicorn
+pytest
