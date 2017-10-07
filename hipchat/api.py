@@ -4,12 +4,18 @@ import urllib2
 from BeautifulSoup import BeautifulSoup
 
 class ParserResource:
-    def on_get(self,req,resp):
+    def on_get(self,req,resp): 
         response = {}
         input_string = req.get_param("input")
         if input_string:
+            
+            #Considering mentions which always starts with an '@' and ends when hitting a non-word character
             mentions = re.findall(r"(?<=^|(?<=[^a-zA-Z0-9-_\.]))@([A-Za-z]+[A-Za-z0-9]+)", input_string)
+            
+            #Considering emoticons which are alphanumeric strings, no longer than 15 characters, contained in parenthesis
             emoticons = re.findall(r"\(([^\W_]{,15})\)", input_string)
+            
+            #Considering any URLs contained in the message, along with the page's title
             links = []
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', input_string)
             for url in urls:
